@@ -27,6 +27,7 @@ describe('password aggregate', () => {
       expect(instance.hash).toHaveLength(60);
     }
 
+    // when hash a password, this call generateHashSync of CryptoService
     // generateHashSync should call generateSaltSync to create a password safe table hash
     // so hashSync and generateSaltSync have to be called the same times of size of instance array
     expect(hashSyncSpy).toHaveBeenCalledTimes(instances.length);
@@ -89,5 +90,48 @@ describe('password aggregate', () => {
 
       expect(isEqual).toBeFalsy();
     }
+  });
+
+  it('should be implemented test of "isStrong" method', () => {
+    for (const instance of instances) {
+      expect(instance.isStrong()).toBeTruthy();
+    }
+  });
+
+  it('should password transformer "from" return a instanceof Password and be equals the instance with plain value', async () => {
+    const [plainInstance] = instances;
+
+    expect(plainInstance.type).toStrictEqual(PasswordInstance.PLAIN);
+
+    const hashInstance: Password = Password.transformer().from(
+      plainInstance.hash,
+    );
+
+    expect(hashInstance).toBeInstanceOf(Password);
+    expect(hashInstance.type).toStrictEqual(PasswordInstance.HASH);
+
+    const isEqual = await hashInstance.isEqual(plainInstance);
+
+    expect(isEqual).toBeTruthy();
+  });
+
+  it('should password transformer "to" return a hash string to store in database and the instance of hash should be equals the plain instance', async () => {
+    const [plainInstance] = instances;
+
+    expect(plainInstance.type).toStrictEqual(PasswordInstance.PLAIN);
+
+    const transformedHash: string = Password.transformer().to(plainInstance);
+
+    const hashInstance = new Password(transformedHash, PasswordInstance.HASH);
+
+    const isEqual = await hashInstance.isEqual(plainInstance);
+
+    expect(isEqual).toBeTruthy();
+  });
+
+  it('should transformer "to" throw a error when a not Password instance is given', () => {
+    const [somePassword] = plainPasswords;
+
+    expect(() => Password.transformer().to(somePassword)).toThrow(Error);
   });
 });
