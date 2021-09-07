@@ -23,9 +23,10 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
+    '@typescript-eslint/no-shadow': ['error'],
     'no-unused-vars': 'off',
+    'no-shadow': 'off',
     'quotes': ['error', 'single'],
-    'no-shadow': 'error',
     'no-nested-ternary': 'error',
     'import/order': [
       'error',

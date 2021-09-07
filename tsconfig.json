@@ -20,6 +20,18 @@
       ],
       "@ccicomp/core/*": [
         "libs/core/src/*"
+      ],
+      "@ccicomp/crypto": [
+        "libs/crypto/src"
+      ],
+      "@ccicomp/crypto/*": [
+        "libs/crypto/src/*"
+      ],
+      "@ccicomp/common": [
+        "libs/common/src"
+      ],
+      "@ccicomp/common/*": [
+        "libs/common/src/*"
       ]
     }
   }

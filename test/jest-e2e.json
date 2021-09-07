@@ -12,6 +12,10 @@
   },
   "moduleNameMapper": {
     "@ccicomp/core/(.*)": "<rootDir>/../libs/core/src/$1",
-    "@ccicomp/core": "<rootDir>/../libs/core/src"
+    "@ccicomp/core": "<rootDir>/../libs/core/src",
+    "@ccicomp/crypto/(.*)": "<rootDir>/../libs/crypto/src/$1",
+    "@ccicomp/crypto": "<rootDir>/../libs/crypto/src",
+    "@ccicomp/common/(.*)": "<rootDir>/../libs/common/src/$1",
+    "@ccicomp/common": "<rootDir>/../libs/common/src"
   }
 }
