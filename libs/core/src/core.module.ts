@@ -1,10 +1,16 @@
-import { Module } from '@nestjs/common';
-import { CoreService } from './core.service';
+import { Module, Scope } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { DatabaseModule } from './database';
+import { ValidationPipe } from './pipes';
 
 @Module({
   imports: [DatabaseModule],
-  providers: [CoreService],
-  exports: [CoreService],
+  providers: [
+    {
+      provide: APP_PIPE,
+      scope: Scope.REQUEST,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class CoreModule {}
