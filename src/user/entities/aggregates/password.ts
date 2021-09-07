@@ -7,9 +7,11 @@ export enum PasswordInstance {
 }
 
 export class Password {
+  private _hash: string;
+
   constructor(
     private readonly value: string,
-    private readonly type: PasswordInstance,
+    public readonly type: PasswordInstance,
     private readonly cryptoService = new CryptoService(),
   ) {}
 
@@ -31,7 +33,13 @@ export class Password {
   }
 
   get hash(): string {
-    return this.cryptoService.createHashSync(this.value).hash;
+    // if current instance is HASH, value is hash
+    if (this.type === PasswordInstance.HASH) return this.value;
+
+    if (!this._hash)
+      this._hash = this.cryptoService.createHashSync(this.value).hash;
+
+    return this._hash;
   }
 
   // TODO
