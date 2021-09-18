@@ -1,13 +1,24 @@
 import { OmitType } from '@nestjs/mapped-types';
 import { Transform } from 'class-transformer';
-import { IsInstance, MaxLength, MinLength, ValidateIf } from 'class-validator';
-import { Password, PasswordInstance } from '../entities/aggregates/password';
+import {
+  Allow,
+  IsInstance,
+  MaxLength,
+  MinLength,
+  ValidateIf,
+  ValidateNested,
+} from 'class-validator';
+import { UpdatePersonDto } from '../person';
 import { CreateUserDto } from './create-user.dto';
+import { Password, PasswordInstance } from '@/models/user';
 
 export class UpdateUserDto extends OmitType(CreateUserDto, [
   'password',
   'login',
 ]) {
+  @Allow()
+  id?: number;
+
   @ValidateIf((obj: UpdateUserDto) => {
     const hasPassword = !!obj.password;
 
@@ -20,4 +31,7 @@ export class UpdateUserDto extends OmitType(CreateUserDto, [
   @Transform(({ value }) => new Password(value, PasswordInstance.PLAIN))
   @IsInstance(Password, { message: 'Houve um erro ao salvar sua senha' })
   password?: Password;
+
+  @ValidateNested()
+  person: UpdatePersonDto;
 }

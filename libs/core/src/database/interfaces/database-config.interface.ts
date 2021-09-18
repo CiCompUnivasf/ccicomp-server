@@ -4,9 +4,9 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 
 export type DatabaseType = 'postgres' | 'mysql' | 'mariadb';
 
-export type IDatabaseConfig =
-  | MysqlConnectionOptions
-  | (PostgresConnectionOptions & {
-      autoLoadEntities?: boolean;
-      logging: LoggerOptions;
-    });
+type SupportedOptions = MysqlConnectionOptions | PostgresConnectionOptions;
+
+export type IDatabaseConfig = SupportedOptions & {
+  autoLoadEntities?: boolean;
+  logging: LoggerOptions;
+};

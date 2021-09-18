@@ -1,11 +1,9 @@
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LoggerOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { DatabaseDateListener } from './database-date.listener';
 import { databaseConfig } from './database.config';
-import { DatabaseType } from './interfaces';
 
 @Module({
   imports: [
@@ -15,43 +13,33 @@ import { DatabaseType } from './interfaces';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory(config: ConfigService) {
+      async useFactory(configService: ConfigService) {
         const logger = new Logger('DatabaseModule');
 
-        const type: DatabaseType = config.get('database.type');
-        const host: string = config.get('database.host');
-        const port: number = config.get('database.port');
-        const username: string = config.get('database.username');
-        const password: string = config.get('database.password');
-        const schema: string = config.get('database.schema') || 'public';
-        const database: string = config.get('database.database');
-        const logging: LoggerOptions = config.get('database.logging');
-        const autoLoadEntities = config.get('database.autoLoadEntities');
-        const cache = config.get('database.cache');
+        const cache = configService.get('database.cache');
         const synchronize =
           process.env.APP_ENV !== 'production' &&
           process.env.DB_SYNC_SCHEMA === 'true';
 
-        logger.log(
-          `Criando nova conexão: ${host}:${port} | ${username}:${password} | ${database}:${schema} | cache: ${!!cache}`,
-        );
-
-        logger.log(`Sincronizar schema: ${synchronize ? 'Sim' : 'Não'}`);
-
-        return {
-          type,
-          host,
-          port,
-          username,
-          password,
-          database,
-          schema,
-          cache,
-          autoLoadEntities,
-          logging,
+        const config = {
+          ...configService.get('database'),
           synchronize,
           namingStrategy: new SnakeNamingStrategy(),
         };
+
+        const message: string = [
+          'Criando nova conexão:',
+          `${config.host}:${config.port} |`,
+          `${config.username}:${config.password} |`,
+          `${config.database}:${config.schema} |`,
+          `cache: ${!!cache}`,
+        ].join(' ');
+
+        logger.log(message);
+
+        logger.log(`Sincronizar schema: ${synchronize ? 'Sim' : 'Não'}`);
+
+        return config;
       },
       inject: [ConfigService],
     }),

@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { CreateUserDto, UpdateUserDto } from '@/dto/user';
+import { User } from '@/models/user';
 
 @Injectable()
 export class UserService {
@@ -11,7 +10,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly repository: Repository<User>,
   ) {}
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto): Promise<User> {
     return this.repository.save(createUserDto);
   }
 

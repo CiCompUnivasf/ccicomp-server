@@ -17,7 +17,12 @@ type RequestName = 'create' | 'read' | 'update' | 'delete' | 'custom';
 @Injectable({ scope: Scope.REQUEST })
 export class ValidationPipe extends BasePipe {
   constructor(@Inject(REQUEST) private readonly request: Request) {
-    super({ transform: true, whitelist: true });
+    super({
+      transform: true,
+      whitelist: true,
+      stopAtFirstError: true,
+    });
+
     log('piping...');
   }
 

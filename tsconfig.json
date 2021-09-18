@@ -15,6 +15,9 @@
     "incremental": true,
     "skipLibCheck": true,
     "paths": {
+      "@/*": [
+        "src/*"
+      ],
       "@ccicomp/core": [
         "libs/core/src"
       ],
