@@ -9,6 +9,8 @@ export interface StoreNewObject extends StoredObject {
   override?: boolean;
   // Altera o nome caso o arquivo exista e não possa sobrescrever
   mixNameOnExists?: boolean;
+
+  folder?: string;
 }
 
 export interface StoreNewObjectResult {

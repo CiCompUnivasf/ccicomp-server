@@ -25,8 +25,10 @@ export class BackyArticleController {
   async upload(@UploadedFile() file: Express.Multer.File) {
     const uploaded = await this.storageService.store({
       name: file.originalname,
+      folder: 'article',
       content: file.stream || file.buffer, // ? Sempre que stream estiver disponível, vamos utilizar.
       mixNameOnExists: true,
+      public: true,
     });
 
     if (!uploaded.success) {

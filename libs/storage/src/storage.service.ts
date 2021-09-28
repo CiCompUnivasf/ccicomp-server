@@ -20,7 +20,7 @@ export class StorageService {
   public async store(options: StoreNewObject): Promise<StoreNewObjectResult> {
     const selectedBucket = this.getBucket(options);
 
-    const fileExists = await this.getObject(options);
+    const fileExists = await this.objectExists(options);
 
     if (fileExists && !options.override && !options.mixNameOnExists) {
       return {
@@ -43,7 +43,7 @@ export class StorageService {
       .upload({
         Bucket: selectedBucket,
         Body: options.content,
-        Key: options.name,
+        Key: this.getFilename(options),
         ACL: options.public ? 'public-read' : 'private',
       })
       .promise();
@@ -58,7 +58,7 @@ export class StorageService {
     const stored = await this.s3
       .getObject({
         Bucket: this.getBucket(options),
-        Key: options.name,
+        Key: this.getFilename(options),
       })
       .promise();
 
@@ -71,6 +71,40 @@ export class StorageService {
       content: stored.Body,
       contentType: stored.ContentType,
     };
+  }
+
+  public async objectExists(options: GetObject): Promise<boolean> {
+    try {
+      const has = await this.getObject(options);
+
+      return !!has;
+    } catch (e) {
+      if (e.message.includes('The specified key does not exist')) {
+        return false;
+      }
+
+      throw e;
+    }
+  }
+
+  private getFilename(options?: {
+    folder?: string;
+    name: string;
+    absolut?: boolean;
+  }) {
+    if (options.absolut) {
+      return options.name;
+    }
+
+    return [options.folder || this.createUploadDir(), options.name].join('/');
+  }
+
+  private createUploadDir(): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getUTCMonth();
+
+    return ['uploads', year, month].join('/');
   }
 
   private getBucket(options?: { bucket?: string }): string {
