@@ -25,6 +25,8 @@ export class StorageService {
 
     const fileExists = await this.objectExists(options);
 
+    const filename = this.getFilename(options);
+
     if (fileExists && !options.override && !options.mixNameOnExists) {
       return {
         success: false,
@@ -52,6 +54,8 @@ export class StorageService {
         ACL: options.public ? 'public-read' : 'private',
       })
       .promise();
+
+    this.logger.debug(`arquivo criado: ${filename}`);
 
     return {
       success: true,
