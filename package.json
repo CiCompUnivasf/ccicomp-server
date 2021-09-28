@@ -49,10 +49,12 @@
     "@types/express": "^4.17.13",
     "@types/jest": "^26.0.24",
     "@types/jsonwebtoken": "^8.5.5",
+    "@types/multer": "^1.4.7",
     "@types/node": "^16.0.0",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
+    "aws-sdk": "^2.996.0",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -90,7 +92,8 @@
     "moduleNameMapper": {
       "^@ccicomp/core(|/.*)$": "<rootDir>/libs/core/src/$1",
       "^@ccicomp/crypto(|/.*)$": "<rootDir>/libs/crypto/src/$1",
-      "^@ccicomp/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+      "^@ccicomp/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@app/storage(|/.*)$": "<rootDir>/libs/storage/src/$1"
     }
   }
 }

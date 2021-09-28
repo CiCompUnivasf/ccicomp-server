@@ -1,0 +1,21 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@ccicomp/core/(.*)": "<rootDir>/../libs/core/src/$1",
+    "@ccicomp/core": "<rootDir>/../libs/core/src",
+    "@ccicomp/crypto/(.*)": "<rootDir>/../libs/crypto/src/$1",
+    "@ccicomp/crypto": "<rootDir>/../libs/crypto/src",
+    "@ccicomp/common/(.*)": "<rootDir>/../libs/common/src/$1",
+    "@ccicomp/common": "<rootDir>/../libs/common/src"
+  }
+}

@@ -16,7 +16,7 @@
     "skipLibCheck": true,
     "paths": {
       "@/*": [
-        "src/*"
+        "apps/ccicomp-server/src/*"
       ],
       "@ccicomp/core": [
         "libs/core/src"
@@ -35,6 +35,12 @@
       ],
       "@ccicomp/common/*": [
         "libs/common/src/*"
+      ],
+      "@ccicomp/storage": [
+        "libs/storage/src"
+      ],
+      "@ccicomp/storage/*": [
+        "libs/storage/src/*"
       ]
     }
   }
