@@ -1,6 +1,6 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/ccicomp-server/src",
   "projects": {
     "core": {
       "type": "library",
@@ -28,9 +28,30 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "ccicomp-server": {
+      "type": "application",
+      "root": "apps/ccicomp-server",
+      "entryFile": "main",
+      "sourceRoot": "apps/ccicomp-server/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ccicomp-server/tsconfig.app.json"
+      }
+    },
+    "backy-article": {
+      "type": "application",
+      "root": "apps/backy-article",
+      "entryFile": "main",
+      "sourceRoot": "apps/backy-article/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/backy-article/tsconfig.app.json"
+      }
     }
   },
   "compilerOptions": {
-    "webpack": true
-  }
+    "webpack": true,
+    "tsConfigPath": "apps/ccicomp-server/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/ccicomp-server"
 }
