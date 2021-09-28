@@ -1,10 +1,14 @@
-import { ClassSerializerInterceptor, Module, Scope } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  DynamicModule,
+  Module,
+  Scope,
+} from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { DatabaseModule } from './database';
 import { ValidationPipe } from './pipes';
 
 @Module({
-  imports: [DatabaseModule],
   providers: [
     {
       provide: APP_PIPE,
@@ -18,4 +22,11 @@ import { ValidationPipe } from './pipes';
     },
   ],
 })
-export class CoreModule {}
+export class CoreModule {
+  static forDatabase(): DynamicModule {
+    return {
+      module: CoreModule,
+      imports: [DatabaseModule],
+    };
+  }
+}
