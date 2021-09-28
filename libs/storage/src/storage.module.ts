@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { storageConfig } from './storage.config';
 import { StorageService } from './storage.service';
@@ -10,7 +10,7 @@ import { StorageService } from './storage.service';
       cache: true,
     }),
   ],
-  providers: [StorageService],
+  providers: [StorageService, Logger],
   exports: [StorageService],
 })
 export class StorageModule {}

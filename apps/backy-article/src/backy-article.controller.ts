@@ -21,7 +21,14 @@ export class BackyArticleController {
   ) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        files: 1,
+        fileSize: 6_000_000, // ? 6 Megabytes
+      },
+    }),
+  )
   async upload(@UploadedFile() file: Express.Multer.File) {
     const uploaded = await this.storageService.store({
       name: file.originalname,

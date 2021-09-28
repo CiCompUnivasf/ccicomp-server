@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import { randomString } from '@ccicomp/common/utils';
@@ -13,7 +13,10 @@ import {
 export class StorageService {
   private s3: S3;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly logger: Logger,
+  ) {
     this.createS3Instance();
   }
 
@@ -29,6 +32,8 @@ export class StorageService {
       };
     } else if (fileExists && options.mixNameOnExists) {
       // ? Caso o arquivo já exista, criamos o novo nome se permitido.
+
+      this.logger.log('Arquivo já existe, criando novo mixin');
 
       const extension = options.name.split('.').pop();
       return this.store({
@@ -55,12 +60,18 @@ export class StorageService {
   }
 
   public async getObject(options: GetObject): Promise<StoredObject | false> {
+    const filename = this.getFilename(options);
+
+    this.logger.debug(`obtendo arquivo: ${filename}`);
+
     const stored = await this.s3
       .getObject({
         Bucket: this.getBucket(options),
-        Key: this.getFilename(options),
+        Key: filename,
       })
       .promise();
+
+    this.logger.debug(`obtido: ${filename}`);
 
     if (!stored.Body) {
       return false;
