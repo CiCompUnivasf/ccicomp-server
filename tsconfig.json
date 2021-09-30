@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node",
+    "target": "es2017",
+    "outDir": "./dist",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -9,9 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
-    "target": "es2017",
-    "sourceMap": true,
-    "outDir": "./dist",
+    "sourceMap": false,
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,

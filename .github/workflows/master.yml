@@ -7,6 +7,7 @@ on:
       - master
 
 env:
+  APP_ENV: 'homolog'
   domain: 'api.ccicomp.com.br'
   service: 'ccicomp-server'
   backyDomain: 'backy-api.ccicomp.com.br'
@@ -16,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
       - name: ⚙️ ┆ Versão do Node.js utilizada -  ${{ matrix.node-version }}
@@ -28,10 +29,10 @@ jobs:
         run: yarn install
 
       - name: 🔨 ┆ Building BackyArticle
-        run: yarn build backy-article
+        run: yarn build
 
       - name: 🗑️ ┆ Limpando source
-        run: rm -rf apps && rm -rf libs && rm -rf node_modules
+        run: rm -rf apps && rm -rf libs
 
       - name: ☁ ┆ Realizando deploy
         uses: serverless/github-action@master

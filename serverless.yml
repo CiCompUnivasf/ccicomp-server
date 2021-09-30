@@ -3,6 +3,8 @@ service: ccicomp-server
 plugins:
   - serverless-offline
   - serverless-domain-manager
+  - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
+  - serverless-plugin-include-dependencies
 
 provider:
   name: aws
@@ -10,6 +12,10 @@ provider:
   stage: api
   apiGateway:
     shouldStartNameWithService: true
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+    environment:
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+
 
 custom:
   logRetentionInDays: 90
@@ -22,13 +28,16 @@ custom:
     basePath: ''
     stage: api
     createRoute53Record: true
+  includeDependencies:
+    enableCaching: true
 
 package:
   excludeDevDependencies: true
+  individually: true
 
 functions:
   backyArticle:
-    handler: dist/apps/backy-article/main.handler
+    handler: dist/main.handler
     timeout: 30
     environment: ${self:custom.secrets}
     events:
