@@ -16,9 +16,14 @@ import { CreateArticleDto } from './models/article';
 @Controller()
 export class BackyArticleController {
   constructor(
-    private readonly backyArticleService: BackyArticleService,
+    private readonly service: BackyArticleService,
     private readonly storageService: StorageService,
   ) {}
+
+  @Get()
+  async hello() {
+    return this.service.getHello();
+  }
 
   @Post('upload')
   @UseInterceptors(
@@ -47,11 +52,11 @@ export class BackyArticleController {
 
   @Post()
   async create(@Body() createArticleDto: CreateArticleDto) {
-    // TODO
-  }
+    await this.service.sendToValidators(createArticleDto);
 
-  @Get()
-  getHello(): string {
-    return this.backyArticleService.getHello();
+    return {
+      success: true,
+      message: 'Enviado com sucesso !',
+    };
   }
 }

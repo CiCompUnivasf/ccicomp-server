@@ -93,7 +93,8 @@
       "^@ccicomp/core(|/.*)$": "<rootDir>/libs/core/src/$1",
       "^@ccicomp/crypto(|/.*)$": "<rootDir>/libs/crypto/src/$1",
       "^@ccicomp/common(|/.*)$": "<rootDir>/libs/common/src/$1",
-      "^@app/storage(|/.*)$": "<rootDir>/libs/storage/src/$1"
+      "^@app/storage(|/.*)$": "<rootDir>/libs/storage/src/$1",
+      "^@ccicomp/notification(|/.*)$": "<rootDir>/libs/notification/src/$1"
     }
   }
 }

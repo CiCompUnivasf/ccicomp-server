@@ -41,6 +41,12 @@
       ],
       "@ccicomp/storage/*": [
         "libs/storage/src/*"
+      ],
+      "@ccicomp/notification": [
+        "libs/notification/src"
+      ],
+      "@ccicomp/notification/*": [
+        "libs/notification/src/*"
       ]
     }
   }
