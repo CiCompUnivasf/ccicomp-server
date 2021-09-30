@@ -1,4 +1,4 @@
-service: ${env:SERVICE_NAME}
+service: ccicomp-server
 
 plugins:
   - serverless-offline
@@ -28,7 +28,7 @@ package:
 
 functions:
   backyArticle:
-    handler: dist/backy-article/main.handler
+    handler: dist/apps/backy-article/main.handler
     timeout: 30
     environment: ${self:custom.secrets}
     events:
