@@ -25,7 +25,7 @@ import { StorageService } from './storage.service';
           },
         });
       },
-      inject: [ConfigModule],
+      inject: [ConfigService],
     },
   ],
   exports: [StorageService],
