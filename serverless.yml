@@ -13,32 +13,15 @@ provider:
 
 custom:
   logRetentionInDays: 90
-  secrets: ${ssm:/aws/reference/secretsmanager/${self:service}~true}
+  secrets: ${ssm:/aws/reference/secretsmanager/ccicomp-server~true}
   serverless-offline:
     noPrependStageInUrl: true
   customDomain:
-    domainName: ${env:DOMAIN_NAME}
+    domainName: api.ccicomp.com.br
+    certificateName: '*.ccicomp.com.br'
     basePath: ''
-    stage: '${self:provider.stage}'
+    stage: api
     createRoute53Record: true
-
-resources:
-  Resources:
-    AWSLambdaVPCAccessExecutionRole:
-      Type: 'AWS::IAM::ManagedPolicy'
-      Properties:
-        Description: Creating policy for vpc connetion.
-        Roles:
-          - Ref: IamRoleLambdaExecution
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - 'ec2:CreateNetworkInterface'
-                - 'ec2:DescribeNetworkInterfaces'
-                - 'ec2:DeleteNetworkInterface'
-              Resource: '*'
 
 package:
   excludeDevDependencies: true
