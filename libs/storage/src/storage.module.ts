@@ -1,5 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { S3 } from 'aws-sdk';
 import { storageConfig } from './storage.config';
 import { StorageService } from './storage.service';
 
@@ -10,7 +11,23 @@ import { StorageService } from './storage.service';
       cache: true,
     }),
   ],
-  providers: [StorageService, Logger],
+  providers: [
+    StorageService,
+    Logger,
+    {
+      provide: S3,
+      useFactory(configService: ConfigService) {
+        return new S3({
+          region: configService.get('storage.region'),
+          credentials: {
+            accessKeyId: configService.get('storage.accessId'),
+            secretAccessKey: configService.get('storage.secret'),
+          },
+        });
+      },
+      inject: [ConfigModule],
+    },
+  ],
   exports: [StorageService],
 })
 export class StorageModule {}

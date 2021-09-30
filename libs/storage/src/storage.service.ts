@@ -11,14 +11,11 @@ import {
 
 @Injectable()
 export class StorageService {
-  private s3: S3;
-
   constructor(
+    private readonly s3: S3,
     private readonly configService: ConfigService,
     private readonly logger: Logger,
-  ) {
-    this.createS3Instance();
-  }
+  ) {}
 
   public async store(options: StoreNewObject): Promise<StoreNewObjectResult> {
     const selectedBucket = this.getBucket(options);
@@ -124,15 +121,5 @@ export class StorageService {
 
   private getBucket(options?: { bucket?: string }): string {
     return options?.bucket || this.configService.get('storage.bucket');
-  }
-
-  private createS3Instance() {
-    this.s3 = new S3({
-      region: this.configService.get('storage.region'),
-      credentials: {
-        accessKeyId: this.configService.get('storage.accessId'),
-        secretAccessKey: this.configService.get('storage.secret'),
-      },
-    });
   }
 }

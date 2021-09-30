@@ -24,7 +24,6 @@ custom:
     noPrependStageInUrl: true
   customDomain:
     domainName: api.ccicomp.com.br
-    certificateName: '*.ccicomp.com.br'
     basePath: ''
     stage: api
     createRoute53Record: true
