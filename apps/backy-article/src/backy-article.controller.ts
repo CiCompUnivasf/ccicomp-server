@@ -35,6 +35,18 @@ export class BackyArticleController {
     }),
   )
   async upload(@UploadedFile() file: Express.Multer.File) {
+    const mimes = [
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/msword',
+    ];
+
+    if (!mimes.includes(file.mimetype)) {
+      throw new HttpException(
+        'Apenas arquivos DOCX são aceitos',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const uploaded = await this.storageService.store({
       name: file.originalname,
       folder: 'article',
