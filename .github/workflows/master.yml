@@ -1,0 +1,57 @@
+name: ☁ ┆ Atualizando Homolog
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+env:
+  domain: 'api.ccicomp.com.br'
+  service: 'ccicomp-server'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: ⚙️ ┆ Versão do Node.js utilizada -  ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🔧 ┆ Instalação de dependências
+        run: npm install
+
+      - name: 🔨 ┆ Building
+        run: npm run build
+
+      - name: ☁ ┆ Realizando deploy
+        uses: serverless/github-action@master
+        with:
+          args: deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SLS_DEBUG: 1
+          DOMAIN_NAME: ${{ env.domain }}
+          SERVICE_NAME: ${{ env.service }}
+          LOG_RETENTION: 90
+
+  discord-message:
+    runs-on: ubuntu-latest
+    needs: run
+    steps:
+      - name: Enviar notificação para o Discord
+        env:
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/${{ secrets.WEBHOOK_ID }}/${{ secrets.WEBHOOK_TOKEN }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'Um novo commit foi pushado em `{{ EVENT_PAYLOAD.repository.full_name }}`. O ambiente https://${{ env.domain }}/ foi atualizado.'
+      - name: Enviando mensagem no Discord
+        env:
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/${{ secrets.WEBHOOK_ID }}/${{ secrets.WEBHOOK_TOKEN }}
+        uses: Ilshidur/action-discord@master

@@ -21,8 +21,6 @@ export class BackyArticleService {
       article.uploadedFile,
     ].join(' ');
 
-    console.log(this.configService.get(BackyConfig.MAIL_SENDER));
-
     const mails: string[] = this.configService.get(BackyConfig.MAIL_VALIDATORS);
     const sender: string = this.configService.get(BackyConfig.MAIL_SENDER).mail;
 

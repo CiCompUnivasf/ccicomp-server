@@ -1,0 +1,53 @@
+service: ${env:SERVICE_NAME}
+
+plugins:
+  - serverless-offline
+  - serverless-domain-manager
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: api
+  apiGateway:
+    shouldStartNameWithService: true
+
+custom:
+  logRetentionInDays: 90
+  secrets: ${ssm:/aws/reference/secretsmanager/${self:service}~true}
+  serverless-offline:
+    noPrependStageInUrl: true
+  customDomain:
+    domainName: ${env:DOMAIN_NAME}
+    basePath: ''
+    stage: '${self:provider.stage}'
+    createRoute53Record: true
+
+resources:
+  Resources:
+    AWSLambdaVPCAccessExecutionRole:
+      Type: 'AWS::IAM::ManagedPolicy'
+      Properties:
+        Description: Creating policy for vpc connetion.
+        Roles:
+          - Ref: IamRoleLambdaExecution
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'ec2:CreateNetworkInterface'
+                - 'ec2:DescribeNetworkInterfaces'
+                - 'ec2:DeleteNetworkInterface'
+              Resource: '*'
+
+package:
+  excludeDevDependencies: true
+
+functions:
+  backyArticle:
+    handler: dist/backy-article/main.handler
+    timeout: 30
+    environment: ${self:custom.secrets}
+    events:
+      - http: ANY /{proxy+}
+      - http: ANY /

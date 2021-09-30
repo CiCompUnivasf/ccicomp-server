@@ -47,7 +47,12 @@ export class BackyArticleController {
       throw new HttpException(uploaded.message, HttpStatus.BAD_REQUEST);
     }
 
-    return uploaded;
+    return {
+      message: uploaded.message,
+      data: {
+        url: uploaded.data.Location,
+      },
+    };
   }
 
   @Post()
