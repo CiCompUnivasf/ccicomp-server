@@ -19,6 +19,7 @@ import { StorageService } from './storage.service';
       useFactory(configService: ConfigService) {
         return new S3({
           region: configService.get('storage.region'),
+          s3ForcePathStyle: true,
           credentials: {
             accessKeyId: configService.get('storage.accessId'),
             secretAccessKey: configService.get('storage.secret'),

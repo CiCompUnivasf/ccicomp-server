@@ -42,7 +42,7 @@ export class BackyArticleController {
 
     if (!mimes.includes(file.mimetype)) {
       throw new HttpException(
-        'Apenas arquivos DOCX são aceitos',
+        'Apenas arquivos DOCX e DOC são aceitos',
         HttpStatus.BAD_REQUEST,
       );
     }
