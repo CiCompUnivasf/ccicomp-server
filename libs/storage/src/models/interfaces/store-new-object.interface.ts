@@ -10,6 +10,8 @@ export interface StoreNewObject extends StoredObject {
   // Altera o nome caso o arquivo exista e não possa sobrescrever
   mixNameOnExists?: boolean;
 
+  mimeType?: string;
+
   folder?: string;
 }
 

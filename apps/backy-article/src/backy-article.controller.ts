@@ -50,9 +50,10 @@ export class BackyArticleController {
     const uploaded = await this.storageService.store({
       name: file.originalname,
       folder: 'article',
-      content: file.stream || file.buffer, // ? Sempre que stream estiver disponível, vamos utilizar.
+      content: file.buffer,
       mixNameOnExists: true,
       public: true,
+      mimeType: file.mimetype,
     });
 
     if (!uploaded.success) {
