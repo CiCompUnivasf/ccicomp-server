@@ -13,6 +13,8 @@ provider:
   apiGateway:
     shouldStartNameWithService: true
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+    binaryMediaTypes:
+      - 'multipart/form-data'
     environment:
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 
